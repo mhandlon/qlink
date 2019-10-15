@@ -1,11 +1,71 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import { Container, Row, Col } from 'reactstrap'
+import { AsyncTypeahead, Highlighter } from 'react-bootstrap-typeahead';
+
+import Rates from "./Rates";
+import Footer from './Footer';
 
 import '../css/Header.css'
 import logo_white from "../img/logos/qlm-logo-white.png"
 
 export default class Header extends React.Component {
+
+    state = {
+        isLoading: false,
+        options: [],
+        isSubmitted: false,
+        query: '',
+        selected: [],
+        rates: []
+    };
+
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        //console.log(event);
+
+        fetch('http://localhost:3500/api/rates-paygo')
+            .then(response => response.json())
+            .then(
+                rates => {
+                    RegExp.escape = function (string) {
+                        return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+                    };
+
+                    var query = (this.state.selected[0] === undefined) ?  this.state.query : this.state.selected[0].Country;
+                    const regex = new RegExp(RegExp.escape(query), 'i');
+                    //console.log(regex);
+
+                    const fitered = rates.filter((item) => {
+                        return item.Region.match(regex);
+                    });
+
+                    if (fitered.length >= 1){
+                        this.setState({
+                            isSubmitted: true,
+                            rates: fitered
+                        });
+                    } else {
+                        this.setState({
+                            isSubmitted: true,
+                            rates: []
+                        });
+                    }
+                }
+            );
+    }
+
     render() {
+        const results = {
+            selected: this.state.selected,
+            query: this.state.query,
+            rates: this.state.rates
+        };
+
         return (
             <div>
                 <Container fluid={true}>
@@ -22,7 +82,7 @@ export default class Header extends React.Component {
                     </Row>
                     <Row>
                         <Col xs={{ size: 12 }}>
-                            <section>
+                            <section id={"header"}>
                                 <div className={"main"}>
                                     <p className={"main"}>
                                         <span className={"main3x"}>Unlimited</span><br />
@@ -32,28 +92,48 @@ export default class Header extends React.Component {
                                         <span className={"main"}>
                                         Make free calls to over 60 countries.<br />
                                         No apps, calling cards, or extra<br />
-                                        purchases necassary!
+                                        purchases necessary!
                                         </span>
                                     </p>
-                                    <input type="text"
-                                           name="search-query"
-                                           placeholder="Entry Country Name"
-                                           className={"search"}
-                                           onFocus={(e) => e.target.placeholder = ""}
-                                           onBlur={(e) => e.target.placeholder = "Entry Country Name"}
-                                    />
-                                    <button type="button" className="btn">CHECK COUNTRY</button>
+                                    <form onSubmit={this.handleSubmit}>
+                                        <div id={"search"}>
+                                            <Fragment>
+                                                <AsyncTypeahead
+                                                    id={"ast"}
+                                                    name={"ast"}
+                                                    isLoading={this.state.isLoading}
+                                                    onChange={(selected) => {
+                                                        this.setState({selected: selected});
+                                                    }}
+                                                    placeholder="Enter Country Name"
+                                                    onSearch={(query) => {
+                                                        this.setState({isLoading: true,
+                                                                                query: query});
+                                                        fetch(`http://localhost:3500/api/rates-unlimited`)
+                                                            .then(resp => resp.json())
+                                                            .then(json => this.setState({
+                                                                isLoading: false,
+                                                                options: json,
+                                                            }));
+                                                    }}
+                                                    renderMenuItemChildren={(option, props, idx) => (
+                                                        <Highlighter search={props.text}>
+                                                            {option[props.labelKey]}
+                                                        </Highlighter>
+                                                    )}
+                                                    labelKey={'Country'}
+                                                    options={this.state.options}
+                                                />
+                                            </Fragment>
+                                        </div>
+                                        <button type="submit" className="btn">CHECK COUNTRY</button>
+                                    </form>
                                 </div>
                             </section>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col xs={{ size: 10, offset: 1 }}>
-                            <footer>
-                                <p>&copy; Q Link Mobile&trade;. All Rights Reserved <a href={'#'}>Privacy Policy</a> <a href={'#'}>Copyright Notice</a> <a href={'#'}>Website & Use Terms</a> <a href={'#'}>Support</a></p>
-                            </footer>
-                        </Col>
-                    </Row>
+                    {this.state.isSubmitted && <Rates results={results}/>}
+                    <Footer/>
                 </Container>
             </div>
         );

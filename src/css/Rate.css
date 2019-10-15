@@ -1,0 +1,66 @@
+img.checkmark {
+    padding: 50px;
+}
+
+.rate_top {
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.country_not_found {
+    color: #b2b4b1;
+}
+
+#rates p {
+    margin: auto;
+    width: 60%;
+}
+
+div.rates {
+    display: flex;
+    justify-content: center;
+}
+
+.org {
+    color: #f89633;
+}
+
+.table {
+    margin: auto;
+    width: 50% !important;
+}
+
+a.select_countries {
+    color: black;
+    text-decoration: underline;
+}
+
+thead tr {
+    border-bottom: 1px solid #8d8d8d;
+}
+
+th {
+    font-size: 2em;
+}
+
+td {
+    font-size: 1.2em;
+}
+
+/*
+section .table tr td {
+    fontsize: 1.2em;
+}
+
+section p {
+    font-size: 1.2em;
+}
+*/
+
+.center {
+    margin-top: 25px;
+    position: relative;
+    float: none;
+    margin-left: 0;
+}
+

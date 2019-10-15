@@ -1,0 +1,18 @@
+footer p {
+    font-family: "Verdana";
+    color: #363641;
+    font-size: 0.7em;
+    text-align: left;
+    margin-top: 35px;
+    margin-bottom: 35px;
+}
+
+footer p a {
+    color: #363641;
+    text-decoration: underline;
+    margin-right: 10px;
+}
+
+footer p a:hover {
+    color: #0486d8;
+}

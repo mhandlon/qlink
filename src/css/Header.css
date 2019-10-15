@@ -5,11 +5,25 @@ body, html {
     min-height: 100%;
 }
 
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+/* header */
+
 header {
     height: 105px;
     background-color: #07354b;
     position: relative;
     border-bottom: 3px solid #0387da;
+}
+
+header span p {
+    margin: 0;
 }
 
 div.container-fluid {
@@ -37,10 +51,6 @@ span.header-top-container {
     /* border: 1px solid red; */
 }
 
-header span p {
-    margin: 0;
-}
-
 p.header-top-desc {
     font-family: "Verdana";
     font-size: 0.9em;
@@ -52,15 +62,9 @@ p.phone {
     font-weight: bold;
 }
 
-.vertical-center {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-}
+/* main */
 
-section {
+#header {
     position: relative;
     background-image: url("../img/Header.jpg");
     background-repeat: no-repeat;
@@ -102,13 +106,30 @@ section p.main {
     color: white;
 }
 
-input.search {
-    font: 1em/1.25em Arial, Helvetica, sans-serif;
+p.main:after {
+    display: block;
+    clear: both;
+}
+
+div.floatContainer {
+    position: relative;
     float: left;
-    padding: 5px;
-    width: 285px;
-    padding-left: 25px;
+}
+
+div#search {
+    position: relative;
+    float: left;
+    //font: 1em/1.25em Arial, Helvetica, sans-serif;
+    //float: left;
+    //padding: 5px;
+    width: 50%;
+    //padding-left: 25px;
     color: #363641;
+}
+
+mark.rbt-highlight-text {
+    font-weight: bold;
+    background-color: white;
 }
 
 button.btn {
@@ -116,30 +137,12 @@ button.btn {
     font-size: 0.9em;
     color: white;
     background-color: #f89633;
-    width: 200px;
+    width: 180px;
+    position: relative;
     float: left;
     margin-left: 15px;
 }
 
 button.btn:hover {
     color: #07354b;
-}
-
-footer p {
-    font-family: "Verdana";
-    color: #363641;
-    font-size: 0.7em;
-    text-align: left;
-    margin-top: 35px;
-    margin-bottom: 35px;
-}
-
-footer p a {
-    color: #363641;
-    text-decoration: underline;
-    margin-right: 10px;
-}
-
-footer p a:hover {
-    color: #0486d8;
 }
